@@ -1,0 +1,63 @@
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <title>Chat Bot</title>
+  </head>
+  <body>
+    <h1>Chatterbot</h1>
+
+    
+     <div>
+      <div id="chatbox">
+        <p class="botText"><span>Hi! I'm Chatterbot How may I help you.</span></p>
+      </div>
+      <div id="userInput">
+        <input id="textInput" type="text" name="msg" placeholder="Message" required>
+        
+        <button id="buttonInput" type="submit" value="Send" class="btn-primary">Send</button>
+      </div>
+
+      <script>
+        function getBotResponse() {
+          var rawText = $("#textInput").val();
+          var userHtml = '<p class="userText"><span>' + rawText + '</span></p>';
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          $.get("/get", { msg: rawText }).done(function(data) {
+            var botHtml = '<p class="botText"><span>' + data + '</span></p>';
+            $("#chatbox").append(botHtml);
+            document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          });
+        }
+        $("#textInput").keypress(function(e) {
+            if(e.which == 13) {
+                getBotResponse();
+            }
+        });
+        $("#buttonInput").click(function() {
+          getBotResponse();
+        })
+      </script>
+    </div>
+
+
+  </body>
+</html>
